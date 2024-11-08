@@ -10,7 +10,7 @@ import unittest
 # The data is defined here for visibility purposes in the context
 # of this course.
 full_data = build_data.get_data()
-
+"yyyyyy"
 reduced_data = [
     data.CountyDemographics(
         {'Percent 65 and Older': 13.8,
@@ -174,7 +174,13 @@ reduced_data = [
          'Population per Square Mile': 3.0},
         'WY')
     ]
-
+def population_total(CountyDemographics_list):
+    population_list = [i.population for i in CountyDemographics_list]
+    total_population = 0
+    for i in range(len(CountyDemographics_list)-1):
+        total_population = total_population + CountyDemographics_list[i].population['2014 Population']
+        return total_population
+print(population_total(reduced_data))
 class TestCases(unittest.TestCase):
     pass
 
