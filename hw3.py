@@ -174,20 +174,24 @@ reduced_data = [
          'Population per Square Mile': 3.0},
         'WY')
     ]
-def population_total(CountyDemographics_list):
+# The following function takes an input list of county objects and returns the population of all of the
+# counties in the list combined as the output.
+def population_total(CountyDemographics_list:list):
     population_list = [i.population for i in CountyDemographics_list]
     total_population = 0
     for i in range(len(CountyDemographics_list)):
         total_population = total_population + CountyDemographics_list[i].population['2014 Population']
     return total_population
-print(population_total(full_data))
 
-def filter_by_state(counties, state):
+# The following function takes an input list of county objects and a specified abbreviation of a state and
+# returns a list of county objects in that state as the output.
+def filter_by_state(counties:list, state:str):
     state_list = [i for i in counties if i.state == state]
     return state_list
-print(filter_by_state(reduced_data, "CA"))
 
-def population_by_education(counties, education_level):
+# The following function takes an input list of county objects and a specified education level
+# and returns the number of people in those counties combined of that education level as the output.
+def population_by_education(counties:list, education_level:str):
     if education_level in counties[0].education:
         population_list = [0.01 * i.population['2014 Population'] * i.education[education_level] for i in counties]
     else:
@@ -196,9 +200,10 @@ def population_by_education(counties, education_level):
     for i in range(len(counties)):
         total_population = total_population + population_list[i]
     return total_population
-print(population_by_education(reduced_data, "Bachelor's Degree or Higher"))
 
-def population_by_ethnicity(counties, ethnicity):
+# The following function takes an input list of county objects and a specified ethnicity
+# and returns the number of people in those counties combined of that ethnicity as the output.
+def population_by_ethnicity(counties:list, ethnicity:str):
     if ethnicity in counties[0].ethnicities:
         population_list = [0.01 * i.population['2014 Population'] * i.ethnicities[ethnicity] for i in counties]
     else:
@@ -207,17 +212,19 @@ def population_by_ethnicity(counties, ethnicity):
     for i in range(len(counties)):
         total_population = total_population + population_list[i]
     return total_population
-print(population_by_ethnicity(reduced_data, "White Alone"))
 
-def population_below_poverty_level(counties):
+# The following function takes an input list of county objects
+# and returns the number of people in those counties combined who are below the poverty level.
+def population_below_poverty_level(counties:list):
     population_list = [0.01 * i.population['2014 Population'] * i.income['Persons Below Poverty Level'] for i in counties]
     total_population = 0
     for i in range(len(counties)):
         total_population = total_population + population_list[i]
     return total_population
-print(population_below_poverty_level(reduced_data))
 
-def percent_by_education(counties, education_level):
+# The following function takes an input list of county objects and a specified education level
+# and returns the percent of people across all those counties of that education level as the output.
+def percent_by_education(counties:list, education_level:str):
     if education_level in counties[0].education:
         education_population_list = [0.01 * i.population['2014 Population'] * i.education[education_level] for i in counties]
     else:
@@ -230,9 +237,10 @@ def percent_by_education(counties, education_level):
     for i in range(len(counties)):
         total_population = total_population + counties[i].population['2014 Population']
     return 100 * (education_population / total_population)
-print(percent_by_education(reduced_data, "High School or Higher"))
 
-def percent_by_ethnicity(counties, ethnicity):
+# The following function takes an input list of county objects and a specified ethnicity
+# and returns the percent of people across all those counties of that ethnicity as the output.
+def percent_by_ethnicity(counties:list, ethnicity:str):
     if ethnicity in counties[0].ethnicities:
         ethnicity_population_list = [0.01 * i.population['2014 Population'] * i.ethnicities[ethnicity] for i in counties]
     else:
@@ -245,9 +253,10 @@ def percent_by_ethnicity(counties, ethnicity):
     for i in range(len(counties)):
         total_population = total_population + counties[i].population['2014 Population']
     return 100 * (ethnicity_population / total_population)
-print(percent_by_ethnicity(reduced_data, "White Alone"))
 
-def percent_below_poverty_level(counties):
+# The following function takes an input list of county objects
+# and returns the percent of people across all those counties below the poverty level as the output.
+def percent_below_poverty_level(counties:list):
     poverty_list = [0.01 * i.population['2014 Population'] * i.income['Persons Below Poverty Level'] for i in counties]
     poverty_population = 0
     for i in range(len(counties)):
@@ -257,5 +266,40 @@ def percent_below_poverty_level(counties):
     for i in range(len(counties)):
         total_population = total_population + counties[i].population['2014 Population']
     return 100 * (poverty_population / total_population)
-print(percent_below_poverty_level(reduced_data))
 
+# The following function takes an input list of county objects, specified education level, and specified percentage
+# and returns a list of county objects containing a percentage of people attaining that education level
+# that exceeds the specified percentage.
+def education_greater_than(counties:list, education:str, percentage:int):
+    greater_list = [i for i in counties if i.education[education] > percentage]
+    return greater_list
+# The following function takes an input list of county objects, specified education level, and specified percentage
+# and returns a list of county objects containing a percentage of people attaining that education level
+# that is lower than the specified percentage.
+def education_less_than(counties:list, education:str, percentage:int):
+    less_list = [i for i in counties if i.education[education] < percentage]
+    return less_list
+# The following function takes an input list of county objects, specified ethnicity, and specified percentage
+# and returns a list of county objects containing a percentage of people belonging to that ethnicity
+# that exceeds the specified percentage.
+def ethnicity_greater_than(counties:list, ethnicity:str, percentage:int):
+    greater_list = [i for i in counties if i.ethnicities[ethnicity] > percentage]
+    return greater_list
+# The following function takes an input list of county objects, specified ethnicity, and specified percentage
+# and returns a list of county objects containing a percentage of people belonging to that ethnicity
+# that is lower than the specified percentage.
+def ethnicity_less_than(counties:list, ethnicity:str, percentage:int):
+    less_list = [i for i in counties if i.ethnicities[ethnicity] < percentage]
+    return less_list
+# The following function takes an input list of county objects and specified percentage
+# and returns a list of county objects containing a percentage of people belw the poverty level
+# that exceeds the specified percentage.
+def below_poverty_level_greater_than(counties:list, percentage:str):
+    greater_list = [i for i in counties if i.income['Persons Below Poverty Level'] > percentage]
+    return greater_list
+# The following function takes an input list of county objects and specified percentage
+# and returns a list of county objects containing a percentage of people belw the poverty level
+# that is lower than the specified percentage.
+def below_poverty_level_less_than(counties:list, percentage:str):
+    less_list = [i for i in counties if i.income['Persons Below Poverty Level'] < percentage]
+    return less_list
