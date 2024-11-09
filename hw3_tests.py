@@ -10,7 +10,6 @@ import unittest
 # The data is defined here for visibility purposes in the context
 # of this course.
 full_data = build_data.get_data()
-
 reduced_data = [
     data.CountyDemographics(
         {'Percent 65 and Older': 13.8,
@@ -174,34 +173,122 @@ reduced_data = [
          'Population per Square Mile': 3.0},
         'WY')
     ]
-
+import hw3
 class TestCases(unittest.TestCase):
+    maxDiff = None
     pass
 
     # Part 1
     # test population_total
+    def test_population_total1(self):
+        self.assertEqual(hw3.population_total(hw3.full_data), 318857056)
 
+    def test_population_total2(self):
+        self.assertEqual(hw3.population_total(hw3.reduced_data), 655813)
     # Part 2
     # test filter_by_state
-
+    def test_filter_by_state1(self):
+        expected = [vars(hw3.reduced_data[0])]
+        actual = [vars(i) for i in hw3.filter_by_state(reduced_data, "AL")]
+        self.assertListEqual(expected, actual)
+    def test_filter_by_state2(self):
+        expected = [vars(hw3.reduced_data[2]), vars(hw3.reduced_data[3])]
+        actual = [vars(i) for i in hw3.filter_by_state(reduced_data, "CA")]
+        self.assertListEqual(expected, actual)
     # Part 3
     # test population_by_education
+    def test_population_by_education1(self):
+        self.assertAlmostEqual(hw3.population_by_education(reduced_data, "Bachelor's Degree or Higher"), 195114.1, 1)
+    def test_population_by_education2(self):
+        self.assertAlmostEqual(hw3.population_by_education(full_data, "Bachelor's Degree or Higher"), 92216021, 1)
     # test population_by_ethnicity
+    def test_population_by_ethnicity1(self):
+        self.assertAlmostEqual(hw3.population_by_ethnicity(reduced_data, "White Alone"), 554137.9, 1)
+    def test_population_by_ethnicity2(self):
+        self.assertAlmostEqual(hw3.population_by_ethnicity(reduced_data, "Two or More Races"), 23614, 1)
     # test population_below_poverty_level
+    def test_population_below_poverty_level1(self):
+        self.assertAlmostEqual(hw3.population_below_poverty_level(reduced_data), 107711.7, 1)
+    def test_population_below_poverty_level2(self):
+        self.assertAlmostEqual(hw3.population_below_poverty_level(full_data), 48996488.5, 1)
+
 
     # Part 4
     # test percent_by_education
+    def test_percent_by_education1(self):
+        self.assertAlmostEqual(hw3.percent_by_education(reduced_data, "High School or Higher"), 86.39, 2)
+    def test_percent_by_education2(self):
+        self.assertAlmostEqual(hw3.percent_by_education(reduced_data, "Bachelor's Degree or Higher"), 29.75, 2)
     # test percent_by_ethnicity
+    def test_percent_by_ethnicity1(self):
+        self.assertAlmostEqual(hw3.percent_by_ethnicity(reduced_data, "Black Alone"), 3.84, 2)
+    def test_percent_by_ethnicity2(self):
+        self.assertAlmostEqual(hw3.percent_by_ethnicity(reduced_data, "Hispanic or Latino"), 20.80, 2)
     # test percent_below_poverty_level
+    def test_percent_below_poverty_level1(self):
+        self.assertAlmostEqual(hw3.percent_below_poverty_level(reduced_data), 16.42, 2)
+    def test_percent_below_poverty_level2(self):
+        self.assertAlmostEqual(hw3.percent_below_poverty_level(full_data), 15.37, 2)
 
     # Part 5
     # test education_greater_than
+    def test_education_greater_than1(self):
+        expected = [vars(hw3.reduced_data[6])]
+        actual = [vars(i) for i in hw3.education_greater_than(reduced_data, "High School or Higher", 90)]
+        self.assertListEqual(expected, actual)
+    def test_education_greater_than2(self):
+        expected = [vars(hw3.reduced_data[0]), vars(hw3.reduced_data[2]), vars(hw3.reduced_data[3])]
+        actual = [vars(i) for i in hw3.education_greater_than(reduced_data, "Bachelor's Degree or Higher", 20)]
+        self.assertListEqual(expected, actual)
     # test education_less_than
-    # test ethnicity_greater_than
-    # test ethnicity_less_than
-    # test below_poverty_level_greater_than
-    # test below_poverty_level_less_than
+    def test_education_less_than1(self):
+        expected = [vars(hw3.reduced_data[0]), vars(hw3.reduced_data[1]), vars(hw3.reduced_data[2]), vars(hw3.reduced_data[3]), vars(hw3.reduced_data[4]), vars(hw3.reduced_data[5])]
+        actual = [vars(i) for i in hw3.education_less_than(reduced_data, "High School or Higher", 90)]
+        self.assertListEqual(expected, actual)
 
+    def test_education_less_than2(self):
+        expected = [vars(hw3.reduced_data[1]), vars(hw3.reduced_data[4]), vars(hw3.reduced_data[5]),
+                    vars(hw3.reduced_data[6])]
+        actual = [vars(i) for i in hw3.education_less_than(reduced_data, "Bachelor's Degree or Higher", 20)]
+        self.assertListEqual(expected, actual)
+    # test ethnicity_greater_than
+    def test_ethnicity_greater_than1(self):
+        expected = [vars(hw3.reduced_data[1]), vars(hw3.reduced_data[2]), vars(hw3.reduced_data[4]),
+                    vars(hw3.reduced_data[5]), vars(hw3.reduced_data[6])]
+        actual = [vars(i) for i in hw3.ethnicity_greater_than(reduced_data, "White Alone", 80)]
+        self.assertListEqual(expected, actual)
+
+    def test_ethnicity_greater_than2(self):
+        expected = [vars(hw3.reduced_data[2]), vars(hw3.reduced_data[3])]
+        actual = [vars(i) for i in hw3.ethnicity_greater_than(reduced_data, "Hispanic or Latino", 10)]
+        self.assertListEqual(expected, actual)
+    # test ethnicity_less_than
+    def test_ethnicity_less_than1(self):
+        expected = [vars(hw3.reduced_data[0]), vars(hw3.reduced_data[3])]
+        actual = [vars(i) for i in hw3.ethnicity_less_than(reduced_data, "White Alone", 80)]
+        self.assertListEqual(expected, actual)
+    def test_ethnicity_less_than2(self):
+        expected = [vars(hw3.reduced_data[0]), vars(hw3.reduced_data[1]), vars(hw3.reduced_data[4]), vars(hw3.reduced_data[5]), vars(hw3.reduced_data[6])]
+        actual = [vars(i) for i in hw3.ethnicity_less_than(reduced_data, "Hispanic or Latino", 10)]
+        self.assertListEqual(expected, actual)
+    # test below_poverty_level_greater_than
+    def test_below_poverty_level_greater_than1(self):
+        expected = [vars(hw3.reduced_data[1]), vars(hw3.reduced_data[2]), vars(hw3.reduced_data[3]), vars(hw3.reduced_data[4]), vars(hw3.reduced_data[5])]
+        actual = [vars(i) for i in hw3.below_poverty_level_greater_than(reduced_data, 14)]
+        self.assertListEqual(expected, actual)
+    def test_below_poverty_level_greater_than2(self):
+        expected = [vars(hw3.reduced_data[1]), vars(hw3.reduced_data[3]), vars(hw3.reduced_data[5])]
+        actual = [vars(i) for i in hw3.below_poverty_level_greater_than(reduced_data, 18)]
+        self.assertListEqual(expected, actual)
+    # test below_poverty_level_less_than
+    def test_below_poverty_level_less_than1(self):
+        expected = [vars(hw3.reduced_data[0]), vars(hw3.reduced_data[6])]
+        actual = [vars(i) for i in hw3.below_poverty_level_less_than(reduced_data, 14)]
+        self.assertListEqual(expected, actual)
+    def test_below_poverty_level_less_than2(self):
+        expected = [vars(hw3.reduced_data[0]), vars(hw3.reduced_data[2]), vars(hw3.reduced_data[4]), vars(hw3.reduced_data[6])]
+        actual = [vars(i) for i in hw3.below_poverty_level_less_than(reduced_data, 18)]
+        self.assertListEqual(expected, actual)
 
 
 if __name__ == '__main__':
